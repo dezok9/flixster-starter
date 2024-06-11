@@ -1,19 +1,19 @@
 import React from 'react'
 import './MovieCard.css'
 
-function MovieCard() {
+function MovieCard(movieData) {
     return(
         <div className='movie-card'>
-            <h2>Movie Title</h2>
-            <img src=""></img>
+            <img id='movie-img' src={movieData.src}/>
+            <h2>{movieData.title}</h2>
             <div>
-                <i class="fa-regular fa-star star"></i>
-                <i class="fa-regular fa-star star"></i>
-                <i class="fa-regular fa-star star"></i>
-                <i class="fa-regular fa-star star"></i>
-                <i class="fa-regular fa-star star"></i>
+                <i className="fa-regular fa-star star"></i>
+                <i className="fa-regular fa-star star"></i>
+                <i className="fa-regular fa-star star"></i>
+                <i className="fa-regular fa-star star"></i>
+                <i className="fa-regular fa-star star"></i>
             </div>
-            <p>Rating</p>
+            <p>{movieData.rating}</p>
         </div>
     );
 }

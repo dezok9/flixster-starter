@@ -1,8 +1,13 @@
 .movie-card {
-    padding: 3%;
     border: 2px grey solid;
-    border-radius: 10px;
+    border-radius: 20px;
     margin: 2% 0%;
+    width: 15%;
+}
+
+#movie-img {
+    width: 100%;
+    border-radius: 15px 15px 0px 0px;
 }
 
 .star {
