@@ -12,6 +12,31 @@
   padding: 20px;
 }
 
+.search-bar {
+  width: 50%;
+}
+
+.search-section {
+  display: none;
+  margin-bottom: 3%;
+}
+
+.active {
+  background-color: blue;
+}
+
+.inactive {
+  background-color: grey;
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+
 @media (max-width: 600px) {
   .movie-card {
     width: 100%;

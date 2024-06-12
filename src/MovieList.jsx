@@ -20,10 +20,8 @@ function MovieList(movieData) {
 
     }
 
-
     return(
         <main>
-            <h1>Movies</h1>
             <div className='movie-cards'>
                 {movieData.data.map(createMovieCards)}
             </div>

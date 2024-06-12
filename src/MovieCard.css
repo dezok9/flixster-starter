@@ -3,6 +3,10 @@
     border-radius: 20px;
     margin: 2% 0%;
     width: 15%;
+    transition-duration: 0.25s;
+}
+.movie-card:hover {
+    cursor: pointer;
 }
 
 #movie-img {
