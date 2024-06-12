@@ -10,8 +10,9 @@ function MovieList(movieData) {
 
             return(
                 <MovieCard
-                    title={cardData.title}
+                    title = {cardData.title}
                     key = {cardData.id}
+                    releaseDate = {cardData.release_date}
                     src = {"https://image.tmdb.org/t/p/w500" + cardData.poster_path}
                     rating = {cardData.vote_average}
                 />
