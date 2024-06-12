@@ -2,6 +2,7 @@ import React, { useSyncExternalStore } from 'react'
 import { useState, useEffect } from 'react'
 import './App.css'
 import MovieList from './MovieList'
+import MovieModal from './MovieModal'
 
 const App = () => {
   // Defining variables and the functions that will be used to update them.
@@ -65,7 +66,7 @@ const App = () => {
       fetchData(searchURL, "search");
     }
     else {
-      fetchData(searchURL, "reload default");
+      fetchData(fetchURL, "reload default");
     }
   }
 
@@ -114,6 +115,10 @@ const App = () => {
           <button id='now-playing-tab' className={nowPlayingTabState} onClick={toggleTabs}>Now Playing</button>
           <button id='search-tab' className={searchTabState} onClick={toggleTabs}>Search</button>
         </section>
+
+        <MovieModal
+          data = {movieData}
+        />
 
         <section id='search-section' className={displaySearch}>
            {/* Search is connected using useState variable that performs the handleSearchChange function on a change of input. */}
