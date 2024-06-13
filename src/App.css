@@ -22,11 +22,13 @@
 }
 
 .active {
-  background-color: blue;
+  background-color: black;
+  color: white;
 }
 
 .inactive {
-  background-color: grey;
+  background-color: black;
+  color: rgba(255, 255, 255, 0.4)
 }
 
 .show {

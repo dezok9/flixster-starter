@@ -65,7 +65,7 @@ const App = () => {
       fetchData(searchURL, "search");
     }
     else {
-      fetchData(searchURL, "reload default");
+      fetchData(fetchURL, "reload default");
     }
   }
 
