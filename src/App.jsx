@@ -1,10 +1,10 @@
-import React, { useSyncExternalStore } from "react"
-import { useState, useEffect } from "react"
-import "./App.css"
-import MovieList from "./MovieList"
-import FavoriteMovies from "./FavoriteMovies"
-import WatchedMovies from "./WatchedMovies"
-import MovieModal from './MovieModal'
+import React, { useSyncExternalStore } from "react";
+import { useState, useEffect } from "react";
+import "./App.css";
+import MovieList from "./MovieList";
+import FavoriteMovies from "./FavoriteMovies";
+import WatchedMovies from "./WatchedMovies";
+import MovieModal from './MovieModal';
 
 const App = () => {
   // Defining variables and the functions that will be used to update them.
@@ -12,7 +12,7 @@ const App = () => {
   const [view, setView] = useState("hide");
   const [pageNumber, setPageNumber] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  // const [currentURL, setCurrentURL] = useState("");
+  const [currentURL, setCurrentURL] = useState("");
 
   const [searchTabState, setSearchTabState] = useState("inactive");
   const [nowPlayingTabState, setNowPlayingTabState] = useState("active");
@@ -30,8 +30,6 @@ const App = () => {
   const apiKey = import.meta.env.VITE_API_KEY;
   const fetchURL = "https://api.themoviedb.org/3/movie/now_playing?page=" + pageNumber + "&api_key=" + String(apiKey);
 
-  // const backgroundImgSrc = "url(\"" + movieData.src + "\")";
-
   const fetchData = async (url, action) => {
     /***
      * Generally handles fetching data using the parameters to determine if you want to append to the movieData variable or replace it (i.e. load move vs. search).
@@ -44,7 +42,6 @@ const App = () => {
         const res = await fetch(url);
         const resData = await res.json();
         setMovieData(movieData.concat(resData.results));
-        // setFeaturtedMovieData();
               }
       else if (action === "search") {
         // Attempts to query for an input string given by the user. Clears movieData before performing search to clear movie cards.
@@ -67,16 +64,6 @@ const App = () => {
     catch(err) {
       console.error("Error: " + err);
     }
-  }
-
-  async function getGenres() {
-    /***
-     * Getting the list of official genres through a fetch call.
-     */
-      const genresURL = "https://api.themoviedb.org/3/genre/movie/list" + "?api_key=" + String(apiKey);
-      const res = await fetch(genresURL);
-      const resData = await res.json();
-      return(resData);
   }
 
   async function search(){
@@ -114,12 +101,12 @@ const App = () => {
     }
   }
 
-  function getRatingStar(percent) {
+  function getRatingStar(rating, percent) {
     /***
      * Gets a star for rating display.
      * Passed down to other components.
      */
-    if (movieData.rating >= percent) {
+    if (rating >= percent) {
         return (
             <i className="fa-solid fa-star star"></i>
         )
@@ -152,7 +139,7 @@ const App = () => {
     setSortMovies(event.target.value);
   }
 
-  function runModal() {
+  function modal() {
     if (view == "show") {
       return (
         <MovieModal
@@ -163,13 +150,11 @@ const App = () => {
           key = {4}
         />)
   }}
-//  getGenres();
 
   // Re-render when pageNumber is changed, which occurs when we load more.
   useEffect(() => {
     fetchData(fetchURL, "load");
   }, [pageNumber]);
-
 
   // Generate URL for filtering
   useEffect(() => {
@@ -232,7 +217,7 @@ const App = () => {
         filterURL += "title.asc";
       }
       else if (sortMovies === "Highly Rated") {
-        filterURL += "vote_average.desc"
+        filterURL += "vote_average.desc";
       }
     }
 
@@ -315,7 +300,6 @@ const App = () => {
             favoriteMoviesData = {favoriteMovies}
             setWatchedMoviesData = {setWatchedMovies}
             watchedMoviesData = {watchedMovies}
-            genres = {getGenres()}
             modalInfo = {modalInfo}
             view = {view}
             setView = {setView}
@@ -323,7 +307,7 @@ const App = () => {
             key = {3}
           />
 
-        {runModal()}
+        {modal()}
 
         <button id="load-more" onClick={loadMore}>LOAD MORE</button>
         <footer id = "footer">
