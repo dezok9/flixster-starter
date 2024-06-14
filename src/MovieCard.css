@@ -1,12 +1,33 @@
 .movie-card {
-    border: 2px grey solid;
     border-radius: 20px;
     margin: 2% 0%;
-    width: 15%;
-    transition-duration: 0.25s;
+    width: 26.06vh;
+    height: 39.1vh;
+    background-size: 100%;
+    align-content: end;
+    box-shadow: 0vh 0vh .5vh 0vh rgba(255, 255, 255, 0.1);
+    text-align: left;
+
+    transition-duration: .6s;
 }
 .movie-card:hover {
     cursor: pointer;
+    box-shadow: 0vh 0vh 2vh 2vh rgba(255, 255, 255, 0.2);
+}
+
+.card-buttons {
+    height: 4vh;
+    margin: 1vh 0vh;
+    border-radius: 5px;
+    box-shadow: inset 0 0 2000px rgba(255, 255, 255, .3);
+    backdrop-filter: blur(10px);
+    background-color: transparent;
+    border: none;
+    border-color: rgba(255, 255, 255, .8);
+}
+
+.star {
+    color: #ebc445;
 }
 
 #movie-img {
@@ -15,9 +36,27 @@
 }
 
 #movie-title {
-    font-size: 130%;
+    font-size: 140%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-wrap: nowrap;
+    margin-bottom: 0
 }
 
-.star {
-    color: #ebc445;
+#movie-card-text {
+    box-shadow: inset 0 0 2000px rgba(0, 0, 0, .8);
+    backdrop-filter: blur(10px);
+    height: 38%;
+    border-radius: 0px 0px 20px 20px;
+    padding: 0.5vh 2vh 3vh;
+}
+
+#favorited {
+    box-shadow: inset 0 0 2000px rgba(235, 196, 69, .9);
+    border-color: rgba(235, 196, 69, .8);
+}
+
+#watched {
+    box-shadow: inset 0 0 2000px rgba(78, 161, 83, 0.9);
+    border-color: rgba(78, 161, 83 .8);
 }
