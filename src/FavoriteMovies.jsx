@@ -19,12 +19,10 @@ function FavoriteMovies(favoriteMoviesData) {
         )
     }
 
-    console.log(favoriteMoviesData.favoriteMoviesData)
-
     return (
         <section id = "favorites-container">
             <div id = "title">
-                <h2>Favorites</h2>
+                <h2><i className="fa-solid fa-crown" style={{color: "#ebc445"}}></i> Favorites</h2>
             </div>
             {favoriteMoviesData.favoriteMoviesData.map(createFavoritesCard)}
         </section>

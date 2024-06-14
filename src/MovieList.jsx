@@ -23,14 +23,14 @@ function MovieList(movieData) {
         if (!movieIDs.includes(cardData.id) && cardData.vote_average != 0) {
             movieIDs.push(cardData.id);
 
-            console.log(movieData.favoriteMoviesData);
-
             return(
                 <MovieCard
                     title = {cardData.title}
                     getRatingStar = {movieData.getRatingStar}
                     favoriteMoviesData = {movieData.favoriteMoviesData}
                     setFavoriteMoviesData = {movieData.setFavoriteMoviesData}
+                    setWatchedMoviesData = {movieData.setWatchedMoviesData}
+                    watchedMoviesData = {movieData.watchedMoviesData}
                     key = {cardData.id}
                     movieID = {cardData.id}
                     releaseDate = {cardData.release_date}
@@ -39,6 +39,10 @@ function MovieList(movieData) {
                     backdropSrc = {"https://image.tmdb.org/t/p/original" + cardData.backdrop_path}
                     genresIDs = {deriveGenres(cardData.genre_ids)}
                     overview = {cardData.overview}
+                    modalInfo = {movieData.modalInfo}
+                    setModalInfo = {movieData.setModalInfo}
+                    view = {movieData.view}
+                    setView = {movieData.setView}
                 />
             )
         }

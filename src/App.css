@@ -58,10 +58,9 @@
   flex-direction: column;
   width: 20%;
   height: 100vh;
-  padding: 10vh 4vh 0vh 4vh;
+  padding: 13vh 4vh 0vh 4vh;
   position: fixed;
   gap: 3%;
-  overflow-y: auto;
 }
 
 .dropdown {

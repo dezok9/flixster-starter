@@ -3,12 +3,13 @@ import { useState, useEffect } from "react"
 import "./App.css"
 import MovieList from "./MovieList"
 import FavoriteMovies from "./FavoriteMovies"
-import FeaturedMovie from "./FeaturedMovie"
+import WatchedMovies from "./WatchedMovies"
+import MovieModal from './MovieModal'
 
 const App = () => {
   // Defining variables and the functions that will be used to update them.
   const [movieData, setMovieData] = useState([]);
-  const [featuredMovieData, setFeaturtedMovieData] = useState([])
+  const [view, setView] = useState("hide");
   const [pageNumber, setPageNumber] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   // const [currentURL, setCurrentURL] = useState("");
@@ -21,10 +22,15 @@ const App = () => {
   const [sortMovies, setSortMovies] = useState("Popular");
 
   const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const [watchedMovies, setWatchedMovies] = useState([]);
+
+  const [modalInfo, setModalInfo] = useState({});
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const apiKey = import.meta.env.VITE_API_KEY;
   const fetchURL = "https://api.themoviedb.org/3/movie/now_playing?page=" + pageNumber + "&api_key=" + String(apiKey);
 
+  // const backgroundImgSrc = "url(\"" + movieData.src + "\")";
 
   const fetchData = async (url, action) => {
     /***
@@ -146,6 +152,17 @@ const App = () => {
     setSortMovies(event.target.value);
   }
 
+  function runModal() {
+    if (view == "show") {
+      return (
+        <MovieModal
+          modalInfo = {modalInfo}
+          getRatingStar = {getRatingStar}
+          view = {view}
+          setView = {setView}
+          key = {4}
+        />)
+  }}
 //  getGenres();
 
   // Re-render when pageNumber is changed, which occurs when we load more.
@@ -223,7 +240,15 @@ const App = () => {
     fetchData(filterURL, "search");
   }, [genreFilter, sortMovies]);
 
-  useEffect(() => {}, [favoriteMovies])
+  useEffect(() => {}, [favoriteMovies]);
+
+  useEffect(() => {}, [watchedMovies]);
+
+  useEffect(() => {}, [modalInfo]);
+
+  useEffect(() => {}, [view]);
+
+
 
   return (
     <main className="App">
@@ -231,38 +256,47 @@ const App = () => {
           <button id="now-playing-tab" className={nowPlayingTabState}  onClick={toggleTabs}>Now Playing</button>
           <button id="search-tab" className={searchTabState} onClick={toggleTabs}>Search</button>
 
-          <div className="dropdowns">
-            <h3>Genre</h3>
-            <select name = "genre" className = "dropdown" onChange={filterMovieGenre}>
-              <option value = "All">All</option>
-              <option value = "Action">Action</option>
-              <option value = "Adventure">Adventure</option>
-              <option value = "Animation">Animation</option>
-              <option value = "Comedy">Comedy</option>
-              <option value = "Crime">Crime</option>
-              <option value = "Documentary">Documentary</option>
-              <option value = "Fantasy">Fantasy</option>
-              <option value = "History">History</option>
-              <option value = "Horror">Horror</option>
-              <option value = "Mystery">Mystery</option>
-              <option value = "Romance">Romance</option>
-            </select>
+          <section style={{overflowY: "auto", maxHeight: "60vh", padding: "0% 20% 0% 0%", width: "100%", display: "flex", alignContent: "right", flexDirection: "column"}}>
+            <div className="dropdowns">
+              <h3>Genre</h3>
+              <select name = "genre" className = "dropdown" onChange={filterMovieGenre}>
+                <option value = "All">All</option>
+                <option value = "Action">Action</option>
+                <option value = "Adventure">Adventure</option>
+                <option value = "Animation">Animation</option>
+                <option value = "Comedy">Comedy</option>
+                <option value = "Crime">Crime</option>
+                <option value = "Documentary">Documentary</option>
+                <option value = "Fantasy">Fantasy</option>
+                <option value = "History">History</option>
+                <option value = "Horror">Horror</option>
+                <option value = "Mystery">Mystery</option>
+                <option value = "Romance">Romance</option>
+              </select>
 
-            <h3>Sort By</h3>
-            <select name = "revenue" className = "dropdown" onChange={sortMovieCards}>
-              <option value = "Popular">Popular</option>
-              <option value = "Revenue">Revenue</option>
-              <option value = "Title (A-Z)">Title (A-Z)</option>
-              <option value = "Highly Rated">Highly Rated</option>
-            </select>
-          </div>
+              <h3>Sort By</h3>
+              <select name = "revenue" className = "dropdown" onChange={sortMovieCards}>
+                <option value = "Popular">Popular</option>
+                <option value = "Revenue">Revenue</option>
+                <option value = "Title (A-Z)">Title (A-Z)</option>
+                <option value = "Highly Rated">Highly Rated</option>
+              </select>
+            </div>
 
-          <FavoriteMovies
-              setFavoriteMoviesData = {setFavoriteMovies}
-              favoriteMoviesData = {favoriteMovies}
-              getRatingStar = {getRatingStar}
-              key = {1}
-          />
+            <FavoriteMovies
+                setFavoriteMoviesData = {setFavoriteMovies}
+                favoriteMoviesData = {favoriteMovies}
+                getRatingStar = {getRatingStar}
+                key = {1}
+            />
+            <WatchedMovies
+                watchedMoviesData = {watchedMovies}
+                setWatchedMoviesData = {setWatchedMovies}
+                getRatingStar = {getRatingStar}
+                key = {2}
+            />
+          </section>
+
         </section>
 
         <div id="movie-info">
@@ -279,9 +313,17 @@ const App = () => {
             getRatingStar = {getRatingStar}
             setFavoriteMoviesData = {setFavoriteMovies}
             favoriteMoviesData = {favoriteMovies}
+            setWatchedMoviesData = {setWatchedMovies}
+            watchedMoviesData = {watchedMovies}
             genres = {getGenres()}
-            key = {2}
+            modalInfo = {modalInfo}
+            view = {view}
+            setView = {setView}
+            setModalInfo = {setModalInfo}
+            key = {3}
           />
+
+        {runModal()}
 
         <button id="load-more" onClick={loadMore}>LOAD MORE</button>
         <footer id = "footer">

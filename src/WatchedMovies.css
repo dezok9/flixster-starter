@@ -1,4 +1,4 @@
-#favorites-container {
+#watched-container {
     display: flex;
     padding: 5% 0%;
     flex-direction: column;
@@ -9,6 +9,7 @@
     background-color: rgba(255, 255, 255, 0.3);
     overflow-y: auto;
     margin-top: 7%;
+
 
     border-radius: 8px;
 }
