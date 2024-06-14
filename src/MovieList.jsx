@@ -23,12 +23,14 @@ function MovieList(movieData) {
         if (!movieIDs.includes(cardData.id) && cardData.vote_average != 0) {
             movieIDs.push(cardData.id);
 
+            console.log(movieData.favoriteMoviesData);
+
             return(
                 <MovieCard
                     title = {cardData.title}
                     getRatingStar = {movieData.getRatingStar}
-                    favoriteMoviesData = {cardData.favoriteMoviesData}
-                    setFavoriteMoviesData = {cardData.setFavoriteMoviesData}
+                    favoriteMoviesData = {movieData.favoriteMoviesData}
+                    setFavoriteMoviesData = {movieData.setFavoriteMoviesData}
                     key = {cardData.id}
                     movieID = {cardData.id}
                     releaseDate = {cardData.release_date}

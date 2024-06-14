@@ -261,6 +261,7 @@ const App = () => {
               setFavoriteMoviesData = {setFavoriteMovies}
               favoriteMoviesData = {favoriteMovies}
               getRatingStar = {getRatingStar}
+              key = {1}
           />
         </section>
 
@@ -279,6 +280,7 @@ const App = () => {
             setFavoriteMoviesData = {setFavoriteMovies}
             favoriteMoviesData = {favoriteMovies}
             genres = {getGenres()}
+            key = {2}
           />
 
         <button id="load-more" onClick={loadMore}>LOAD MORE</button>

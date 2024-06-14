@@ -8,19 +8,24 @@ function FavoriteMovies(favoriteMoviesData) {
         return(
             <FavoritesCard
                 title = {cardData.title}
-                favoriteMoviesData = {cardData.favoriteMoviesData}
-                setFavoriteMoviesData = {cardData.setFavoriteMoviesData}
-                key = {cardData.id}
-                movieID = {cardData.id}
-                releaseDate = {cardData.release_date}
-                src = {"https://image.tmdb.org/t/p/w500" + cardData.poster_path}
-                rating = {cardData.vote_average}
+                // favoriteMoviesData = {cardData.favoriteMoviesData}
+                // setFavoriteMoviesData = {cardData.setFavoriteMoviesData}
+                key = {cardData.movieID}
+                movieID = {cardData.moviedID}
+                // releaseDate = {cardData.release_date}
+                backdropSrc = {cardData.backdropSrc}
+                rating = {cardData.rating}
             />
         )
     }
 
+    console.log(favoriteMoviesData.favoriteMoviesData)
+
     return (
         <section id = "favorites-container">
+            <div id = "title">
+                <h2>Favorites</h2>
+            </div>
             {favoriteMoviesData.favoriteMoviesData.map(createFavoritesCard)}
         </section>
     )

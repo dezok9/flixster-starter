@@ -1,11 +1,11 @@
 .App {
-  padding-top: 4%;
   text-align: center;
   display: flex;
   flex-direction: row;
 }
 
 .App-header {
+
   background-color: #282c34;
   display: flex;
   flex-direction: row;
@@ -56,11 +56,12 @@
 .nav-bar {
   display: flex;
   flex-direction: column;
-  width: 10%;
+  width: 20%;
   height: 100vh;
-  padding: 10vh 10vh 0vh 12vh;
+  padding: 10vh 4vh 0vh 4vh;
   position: fixed;
   gap: 3%;
+  overflow-y: auto;
 }
 
 .dropdown {
@@ -82,8 +83,8 @@
   border: 0px;
   font-size: 300%;
   background-color: rgba(0, 0, 0, 0);
-  width: auto;
   text-align: left;
+  width: min-content;
 
   transition-duration: 0.25s;
 }
@@ -101,7 +102,7 @@
 }
 
 #movie-info {
-  padding: 1% 0% 1% 0%;
+  padding: 4% 0% 1% 0%;
   margin-left: 35vh;
   width: 100%;
 }

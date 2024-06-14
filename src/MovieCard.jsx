@@ -31,11 +31,18 @@ function MovieCard(movieData) {
          */
         event.stopPropagation();
         if (isFavorited == false) {
-            movieData.setFavoriteMoviesData(movieData.favoriteMoviesData.concat(movieData));
+            movieData.setFavoriteMoviesData(movieData.favoriteMoviesData.concat([
+                {"title": movieData.title,
+                "backdropSrc": movieData.backdropSrc,
+                "rating": movieData.rating,
+                "movieID": movieData.movieID}
+            ]));
             setIsFavorited(true);
         }
         else {
             setIsFavorited(false);
+            // Remove all movie dictionaries that have the title of the card data clicked.
+            movieData.setFavoriteMoviesData(movieData.favoriteMoviesData.filter(card => card.title != movieData.title));
         }
     }
 
