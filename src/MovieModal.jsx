@@ -8,16 +8,15 @@ function MovieModal(modalInfo) {
 
     const fetchTrailer = async () => {
         try {
-            const movieVideoInfo = "https://api.themoviedb.org/3/movie/" + modalInfo.movieID + "/videos?language=en-US&api_key=" + String(apiKey);
+            const movieVideoInfo = "https://api.themoviedb.org/3/movie/" + modalInfo.movieID + "/videos?api_key=" + String(apiKey);
             const res = await fetch(movieVideoInfo);
             const resData = await res.json();
 
-            const trailerData = await resData.results.find(val => val.site === "YouTube" && val.type === "Trailer")
+            const trailerData = await resData.results.find(val => val.site === "YouTube" && val.type === "Trailer");
 
             if (trailerData != {}) {
-
-                setMovieTrailerURL(movieTrailerURL.concat(trailerData.key));
-                setMovieTrailerURL(movieTrailerURL.concat("?autoplay=1&mute=1"));
+                const addedStr = trailerData.key + "?autoplay=1&mute=1"
+                setMovieTrailerURL(movieTrailerURL.concat(addedStr));
             }
             else {
                 setMovieTrailerURL("");
@@ -29,9 +28,6 @@ function MovieModal(modalInfo) {
             console.error("Error: " + err)
         }
     }
-
-    // fetchTrailer();
-
 
     function getReleaseDate() {
         /***
@@ -47,25 +43,26 @@ function MovieModal(modalInfo) {
         return month + " " + day + ", " + year;
     }
 
-
+    useEffect(() => fetchTrailer, [movieTrailerURL]);
 
     return (
         <section id='movie-modal' className={modalInfo.view} style={{ backgroundImage: backgroundImg }}>
             <span id="close-span"><i id="close-button" className="fa-regular fa-circle-xmark fa-xl" onClick={modalInfo.closeFunc}></i></span>
             <div id="modal-info">
-                <iframe className= "video" src = {movieTrailerURL}></iframe>
-                <source src={modalInfo.backdropSrc} />
-                <section>
+                <iframe className = "video" src = {movieTrailerURL}></iframe>
+                <section className = "modal-content">
                     <h1 id="modal-title">{modalInfo.title}</h1>
                     <p><strong>Release Date:</strong> {getReleaseDate()}</p>
-                    <p><strong>Genre:</strong> {getReleaseDate()}</p>
+                    <p><strong>Genre:</strong> -</p>
                     <div>
-                        <i className="fa-regular fa-star star"></i>
-                        <i className="fa-regular fa-star star"></i>
-                        <i className="fa-regular fa-star star"></i>
-                        <i className="fa-regular fa-star star"></i>
-                        <i className="fa-regular fa-star star"></i>
-                    </div>
+
+                        {modalInfo.getRatingStar(2.0)}
+                        {modalInfo.getRatingStar(4.0)}
+                        {modalInfo.getRatingStar(6.0)}
+                        {modalInfo.getRatingStar(8.0)}
+                        {modalInfo.getRatingStar(10.0)}
+                        </div>
+                    <p>{modalInfo.overview}</p>
                 </section>
             </div>
         </section>

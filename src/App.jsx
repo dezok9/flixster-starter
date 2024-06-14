@@ -2,6 +2,7 @@ import React, { useSyncExternalStore } from "react"
 import { useState, useEffect } from "react"
 import "./App.css"
 import MovieList from "./MovieList"
+import FavoriteMovies from "./FavoriteMovies"
 import FeaturedMovie from "./FeaturedMovie"
 
 const App = () => {
@@ -10,7 +11,7 @@ const App = () => {
   const [featuredMovieData, setFeaturtedMovieData] = useState([])
   const [pageNumber, setPageNumber] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentURL, setCurrentURL] = useState("");
+  // const [currentURL, setCurrentURL] = useState("");
 
   const [searchTabState, setSearchTabState] = useState("inactive");
   const [nowPlayingTabState, setNowPlayingTabState] = useState("active");
@@ -18,6 +19,8 @@ const App = () => {
 
   const [genreFilter, setGenreFilter] = useState("All");
   const [sortMovies, setSortMovies] = useState("Popular");
+
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
 
   const apiKey = import.meta.env.VITE_API_KEY;
   const fetchURL = "https://api.themoviedb.org/3/movie/now_playing?page=" + pageNumber + "&api_key=" + String(apiKey);
@@ -36,7 +39,7 @@ const App = () => {
         const resData = await res.json();
         setMovieData(movieData.concat(resData.results));
         // setFeaturtedMovieData();
-      }
+              }
       else if (action === "search") {
         // Attempts to query for an input string given by the user. Clears movieData before performing search to clear movie cards.
         setMovieData([]);
@@ -56,10 +59,19 @@ const App = () => {
       }
     }
     catch(err) {
-      console.error("Error: " + err)
+      console.error("Error: " + err);
     }
   }
 
+  async function getGenres() {
+    /***
+     * Getting the list of official genres through a fetch call.
+     */
+      const genresURL = "https://api.themoviedb.org/3/genre/movie/list" + "?api_key=" + String(apiKey);
+      const res = await fetch(genresURL);
+      const resData = await res.json();
+      return(resData);
+  }
 
   async function search(){
     /***
@@ -75,25 +87,6 @@ const App = () => {
       fetchData(fetchURL, "reload default");
     }
   }
-
-  function filterMovieGenre(event) {
-     setGenreFilter(event.target.value);
-  }
-
-  function filterMovieRevenue(event) {
-     setRevenueFilter(event.target.value);
-  }
-
-
-  function loadMore() {
-    setPageNumber(pageNumber + 1);
-  }
-
-
-  function handleSearchChange(event) {
-    setSearchQuery((event.target.value.toLowerCase()).replace(" ", "%20"));
-  }
-
 
   function toggleTabs(event) {
     /***
@@ -115,19 +108,51 @@ const App = () => {
     }
   }
 
-  // Re-render when pageNumber is changed, which occurs when we load more.
-  useEffect(() => {
-    fetchData(fetchURL, "load")
-  }, [pageNumber]);
+  function getRatingStar(percent) {
+    /***
+     * Gets a star for rating display.
+     * Passed down to other components.
+     */
+    if (movieData.rating >= percent) {
+        return (
+            <i className="fa-solid fa-star star"></i>
+        )
+    }
+    else {
+        return (
+            <i className="fa-regular fa-star star"></i>
+        )
+    }
+  }
 
 
   function filterMovieGenre(event) {
-    setGenreFilter(event.target.value);
- }
+     setGenreFilter(event.target.value);
+  }
 
- function sortMovieCards(event) {
-  setSortMovies(event.target.value);
- }
+  function loadMore() {
+    setPageNumber(pageNumber + 1);
+  }
+
+  function handleSearchChange(event) {
+    setSearchQuery((event.target.value.toLowerCase()).replace(" ", "%20"));
+  }
+
+  function filterMovieGenre(event) {
+    setGenreFilter(event.target.value);
+  }
+
+  function sortMovieCards(event) {
+    setSortMovies(event.target.value);
+  }
+
+//  getGenres();
+
+  // Re-render when pageNumber is changed, which occurs when we load more.
+  useEffect(() => {
+    fetchData(fetchURL, "load");
+  }, [pageNumber]);
+
 
   // Generate URL for filtering
   useEffect(() => {
@@ -135,7 +160,6 @@ const App = () => {
 
     if (genreFilter != "All") {
       filterURL += "&with_genres="
-      console.log(genreFilter)
 
       if (genreFilter === "Action") {
         filterURL+= "28";
@@ -196,9 +220,10 @@ const App = () => {
     }
 
     filterURL += "&api_key=" + String(apiKey);
-    fetchData(filterURL, "search")
-  }, [genreFilter, sortMovies])
+    fetchData(filterURL, "search");
+  }, [genreFilter, sortMovies]);
 
+  useEffect(() => {}, [favoriteMovies])
 
   return (
     <main className="App">
@@ -231,16 +256,16 @@ const App = () => {
               <option value = "Highly Rated">Highly Rated</option>
             </select>
           </div>
+
+          <FavoriteMovies
+              setFavoriteMoviesData = {setFavoriteMovies}
+              favoriteMoviesData = {favoriteMovies}
+              getRatingStar = {getRatingStar}
+          />
         </section>
 
         <div id="movie-info">
-          <h1 className="title">Flixster</h1>
-
-          {/* <FeaturedMovie
-            movieData = {movieData}
-            backgroundImgSrc = {"https://image.tmdb.org/t/p/w500" + }
-
-          /> */}
+          <header className="title"><i className="fa-solid fa-crown"></i> Flixster</header>
 
           <section id="search-section" className={displaySearch}>
            {/* Search is connected using useState variable that performs the handleSearchChange function on a change of input. */}
@@ -250,9 +275,17 @@ const App = () => {
 
           <MovieList
             data = {movieData}
+            getRatingStar = {getRatingStar}
+            setFavoriteMoviesData = {setFavoriteMovies}
+            favoriteMoviesData = {favoriteMovies}
+            genres = {getGenres()}
           />
 
         <button id="load-more" onClick={loadMore}>LOAD MORE</button>
+        <footer id = "footer">
+          <p>Made by Destiny Okonkwo! <i className="fa-solid fa-poo"></i></p>
+          <p>Flixter 2024. All Rights Reserved. (Not Really)</p>
+        </footer>
         </div>
 
     </main>

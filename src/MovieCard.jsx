@@ -6,6 +6,8 @@ import MovieModal from './MovieModal'
 function MovieCard(movieData) {
     const [view, setView] = useState("hide");
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [isFavorited, setIsFavorited] = useState(false);
+    const [isWatched, setIsWatched] = useState(false);
 
     const backgroundImgSrc = "url(\"" + movieData.src + "\")";
 
@@ -22,6 +24,38 @@ function MovieCard(movieData) {
             setModalIsOpen(false);
         }
     }
+
+    function handleFavoriting(event) {
+        /***
+         * Toggles favorite button.
+         */
+        event.stopPropagation();
+        if (isFavorited == false) {
+            movieData.setFavoriteMoviesData(movieData.favoriteMoviesData.concat(movieData));
+            setIsFavorited(true);
+        }
+        else {
+            setIsFavorited(false);
+        }
+    }
+
+    function handleWatched(event) {
+        /***
+         * Toggles watched button.
+         */
+        event.stopPropagation();
+        if (isWatched == false) {
+            setIsWatched(true);
+        }
+        else {
+            setIsWatched(false);
+        }
+    }
+
+    useEffect(() => {}, [isFavorited]);
+
+    useEffect(() => {}, [isWatched]);
+
 
     // function clickOutModal(event) {
     //     console.log(event);
@@ -43,21 +77,21 @@ function MovieCard(movieData) {
                         <h2 id='movie-title'>{movieData.title}</h2>
                         <div className="filters">
                             <div style={{display: "flex", gap: "10%"}}>
-                                <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                                <button id = {isFavorited ? "favorited" : ""} className = "card-buttons " style={{display: "flex", flexDirection: "row", alignItems: "center"}} onClick = {event => handleFavoriting(event)}>
                                     <i className="fa-solid fa-crown" style={{paddingRight: "7px"}}></i><p>Favorite</p>
-                                </div>
-                                <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                                </button>
+                                <button id = {isWatched ? "watched" : ""} className = "card-buttons" style={{display: "flex", flexDirection: "row", alignItems: "center"}} onClick = {event => handleWatched(event)}>
                                     <i className="fa-solid fa-check" style={{paddingRight: "7px"}}></i><p>Watched</p>
-                                </div>
+                                </button>
                             </div>
                         </div>
 
                         <div>
-                            <i className="fa-solid fa-star star"></i>
-                            <i className="fa-solid fa-star star"></i>
-                            <i className="fa-regular fa-star star"></i>
-                            <i className="fa-regular fa-star star"></i>
-                            <i className="fa-regular fa-star star"></i>
+                            {movieData.getRatingStar(2.0)}
+                            {movieData.getRatingStar(4.0)}
+                            {movieData.getRatingStar(6.0)}
+                            {movieData.getRatingStar(8.0)}
+                            {movieData.getRatingStar(10.0)}
                         </div>
                         <p>{movieData.rating}</p>
 
@@ -65,8 +99,8 @@ function MovieCard(movieData) {
                  </section>
             </main>
 
+            {/* Renders modal if modal is open. */}
             {modalIsOpen &&
-            // <div id = "modal" >
                 <MovieModal
                     title = {movieData.title}
                     key = {movieData.movieID}
@@ -75,9 +109,10 @@ function MovieCard(movieData) {
                     backdropSrc = {movieData.backdropSrc}
                     rating = {movieData.vote_average}
                     view = {view}
+                    getRatingStar = {movieData.getRatingStar}
                     closeFunc = {handleModalView}
+                    overview = {movieData.overview}
                 />
-            // </div>
             }
         </>
     );
