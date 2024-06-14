@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: row;
 }
 
 .App-header {
@@ -14,6 +16,10 @@
 
 .search-bar {
   width: 50%;
+  border-radius: 20px;
+  padding: 4px 20px;
+  border: none;
+  font-family: Urbanist;
 }
 
 .search-section {
@@ -24,32 +30,62 @@
 .active {
   background-color: black;
   color: white;
+  border-bottom: 8px solid red !important;
 }
 
 .inactive {
   background-color: black;
-  color: rgba(255, 255, 255, 0.4)
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .show {
   display: block;
 }
 
+.title {
+  font-size: 300%;
+}
+
 .hide {
   display: none;
 }
+.nav-bar {
+  display: flex;
+  flex-direction: column;
+  width: 10%;
+  height: 100vh;
+  padding: 20vh 10vh 0vh 10vh;
+  position: fixed;
+  gap: 3%;
+}
 
-@media (max-width: 600px) {
-  .movie-card {
-    width: 100%;
-  }
+.dropdown {
+  border-radius: 20px;
+  font-family: Urbanist;
+  padding: 4px 20px;
+  border: none;
+  width: 100%;
+  justify-self: left;
+  text-align: left;
+}
 
-  .search-bar {
-    flex-direction: column;
-    gap: 10px;
-  }
+.dropdowns {
+  justify-content: right;
+}
 
-  .search-bar form {
-    flex-direction: column;
-  }
+#now-playing-tab,
+#search-tab {
+  border: 0px;
+  font-size: 300%;
+  background-color: rgba(0, 0, 0, 0);
+  width: auto;
+  text-align: left;
+
+  transition-duration: 0.25s;
+}
+
+#movie-info {
+  padding: 1% 0% 1% 0%;
+  margin-left: 35vh;
+  width: 100%;
 }

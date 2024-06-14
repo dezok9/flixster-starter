@@ -1,20 +1,26 @@
-import React, { useSyncExternalStore } from 'react'
-import { useState, useEffect } from 'react'
-import './App.css'
-import MovieList from './MovieList'
+import React, { useSyncExternalStore } from "react"
+import { useState, useEffect } from "react"
+import "./App.css"
+import MovieList from "./MovieList"
+import FeaturedMovie from "./FeaturedMovie"
 
 const App = () => {
   // Defining variables and the functions that will be used to update them.
   const [movieData, setMovieData] = useState([]);
+  const [featuredMovieData, setFeaturtedMovieData] = useState([])
   const [pageNumber, setPageNumber] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentURL, setCurrentURL] = useState("");
 
   const [searchTabState, setSearchTabState] = useState("inactive");
   const [nowPlayingTabState, setNowPlayingTabState] = useState("active");
   const [displaySearch, setDisplaySearch] = useState("hide");
 
+  const [genreFilter, setGenreFilter] = useState("All");
+  const [sortMovies, setSortMovies] = useState("Popular");
+
   const apiKey = import.meta.env.VITE_API_KEY;
-  const fetchURL = 'https://api.themoviedb.org/3/movie/now_playing?page=' + pageNumber + '&api_key=' + String(apiKey);
+  const fetchURL = "https://api.themoviedb.org/3/movie/now_playing?page=" + pageNumber + "&api_key=" + String(apiKey);
 
 
   const fetchData = async (url, action) => {
@@ -29,6 +35,7 @@ const App = () => {
         const res = await fetch(url);
         const resData = await res.json();
         setMovieData(movieData.concat(resData.results));
+        // setFeaturtedMovieData();
       }
       else if (action === "search") {
         // Attempts to query for an input string given by the user. Clears movieData before performing search to clear movie cards.
@@ -49,7 +56,7 @@ const App = () => {
       }
     }
     catch(err) {
-      console.error('Error: ' + err)
+      console.error("Error: " + err)
     }
   }
 
@@ -61,12 +68,20 @@ const App = () => {
     * Returns to default if searchQuery is empty.
     */
     if (searchQuery.replace(" ", "") != ""){
-      const searchURL = 'https://api.themoviedb.org/3/search/movie?language=en-US&query=' + searchQuery + '&api_key=' + String(apiKey);
+      const searchURL = "https://api.themoviedb.org/3/search/movie?language=en-US&query=" + searchQuery + "&api_key=" + String(apiKey);
       fetchData(searchURL, "search");
     }
     else {
       fetchData(fetchURL, "reload default");
     }
+  }
+
+  function filterMovieGenre(event) {
+     setGenreFilter(event.target.value);
+  }
+
+  function filterMovieRevenue(event) {
+     setRevenueFilter(event.target.value);
   }
 
 
@@ -106,27 +121,140 @@ const App = () => {
   }, [pageNumber]);
 
 
+  function filterMovieGenre(event) {
+    setGenreFilter(event.target.value);
+ }
+
+ function sortMovieCards(event) {
+  setSortMovies(event.target.value);
+ }
+
+  // Generate URL for filtering
+  useEffect(() => {
+    let filterURL = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1"
+
+    if (genreFilter != "All") {
+      filterURL += "&with_genres="
+      console.log(genreFilter)
+
+      if (genreFilter === "Action") {
+        filterURL+= "28";
+      }
+      else if (genreFilter === "Adventure") {
+        filterURL+= "12";
+      }
+      else if (genreFilter === "Animation") {
+        filterURL+= "16";
+      }
+      else if (genreFilter === "Comedy") {
+        filterURL+= "35";
+      }
+      else if (genreFilter === "Crime") {
+        filterURL+= "80";
+      }
+      else if (genreFilter === "Documentary") {
+        filterURL+= "99";
+      }
+      else if (genreFilter === "Drama") {
+        filterURL+= "18";
+      }
+      else if (genreFilter === "Fantasy") {
+        filterURL+= "14";
+      }
+      else if (genreFilter === "History") {
+        filterURL+= "36";
+      }
+      else if (genreFilter === "Horror") {
+        filterURL+= "27";
+      }
+      else if (genreFilter === "Mystery") {
+        filterURL+= "9648";
+      }
+      else if (genreFilter === "Romance") {
+        filterURL+= "10749";
+      }
+      else if (genreFilter === "Thriller") {
+        filterURL+= "53";
+      }
+    }
+
+    if (sortMovies != "Popular") {
+      filterURL += "&sort_by=";
+
+      if (sortMovies === "Revenue") {
+        filterURL += "revenue.desc";
+      }
+      else if (sortMovies === "Ascending") {
+        filterURL += "revenue.asc";
+      }
+      else if (sortMovies === "Title (A-Z)") {
+        filterURL += "title.asc";
+      }
+      else if (sortMovies === "Highly Rated") {
+        filterURL += "vote_average.desc"
+      }
+    }
+
+    filterURL += "&api_key=" + String(apiKey);
+    fetchData(filterURL, "search")
+  }, [genreFilter, sortMovies])
+
+
   return (
     <main className="App">
-      <header>
-        <h1>Movies</h1>
-        <section className='nav-bar'>
-          <button id='now-playing-tab' className={nowPlayingTabState} onClick={toggleTabs}>Now Playing</button>
-          <button id='search-tab' className={searchTabState} onClick={toggleTabs}>Search</button>
+        <section className="nav-bar">
+          <button id="now-playing-tab" className={nowPlayingTabState}  onClick={toggleTabs}>Now Playing</button>
+          <button id="search-tab" className={searchTabState} onClick={toggleTabs}>Search</button>
+
+          <div className="dropdowns">
+            <h3>Genre</h3>
+            <select name = "genre" className = "dropdown" onChange={filterMovieGenre}>
+              <option value = "All">All</option>
+              <option value = "Action">Action</option>
+              <option value = "Adventure">Adventure</option>
+              <option value = "Animation">Animation</option>
+              <option value = "Comedy">Comedy</option>
+              <option value = "Crime">Crime</option>
+              <option value = "Documentary">Documentary</option>
+              <option value = "Fantasy">Fantasy</option>
+              <option value = "History">History</option>
+              <option value = "Horror">Horror</option>
+              <option value = "Mystery">Mystery</option>
+              <option value = "Romance">Romance</option>
+            </select>
+
+            <h3>Sort By</h3>
+            <select name = "revenue" className = "dropdown" onChange={sortMovieCards}>
+              <option value = "Popular">Popular</option>
+              <option value = "Revenue">Revenue</option>
+              <option value = "Title (A-Z)">Title (A-Z)</option>
+              <option value = "Highly Rated">Highly Rated</option>
+            </select>
+          </div>
         </section>
 
-        <section id='search-section' className={displaySearch}>
+        <div id="movie-info">
+          <h1 className="title">Flixster</h1>
+
+          {/* <FeaturedMovie
+            movieData = {movieData}
+            backgroundImgSrc = {"https://image.tmdb.org/t/p/w500" + }
+
+          /> */}
+
+          <section id="search-section" className={displaySearch}>
            {/* Search is connected using useState variable that performs the handleSearchChange function on a change of input. */}
-          <input className='search-bar' onChange={handleSearchChange} placeholder='Discover your next movie...'></input>
-          <button onClick={search}>Search</button>
-        </section>
-      </header>
+          <input className="search-bar" onChange={handleSearchChange} placeholder="Discover your next movie..."></input>
+          <button onClick={search}>SEARCH</button>
+          </section>
 
-      <MovieList
-        data = {movieData}
-      />
+          <MovieList
+            data = {movieData}
+          />
 
-      <button id='load-more' onClick={loadMore}>Load More</button>
+        <button id="load-more" onClick={loadMore}>LOAD MORE</button>
+        </div>
+
     </main>
   );
 }
