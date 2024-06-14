@@ -32,7 +32,7 @@ function MovieModal(modalInfo) {
         modalInfo.modalInfo.updateModalView();
         modalInfo.setView("hide");
         modalInfo.modalInfo.setModalInfo({});
-        movieData.modalIsOpen("false");
+        modalInfo.modalInfo.setModalIsOpen("false");
     }
 
     function getReleaseDate() {
@@ -50,7 +50,6 @@ function MovieModal(modalInfo) {
     }
 
     useEffect(() => fetchTrailer, [movieTrailerURL]);
-    useEffect(() => getReleaseDate, [movieTrailerURL]);
 
     if (modalInfo.modalInfo != {})
     {    return (
@@ -60,14 +59,14 @@ function MovieModal(modalInfo) {
                     <iframe className = "video" src = {movieTrailerURL}></iframe>
                     <section className = "modal-content">
                         <h1 id="modal-title">{modalInfo.modalInfo.title}</h1>
-                        {/* <p><strong>Release Date:</strong> {getReleaseDate()}</p> */}
-                        <p><strong>Genre:</strong> -</p>
+                        <p><strong>Release Date:</strong> {getReleaseDate()}</p>
+                        <p><strong>Genre:</strong> {modalInfo.modalInfo.genres}</p>
                         <div>
-                            {modalInfo.getRatingStar(2.0)}
-                            {modalInfo.getRatingStar(4.0)}
-                            {modalInfo.getRatingStar(6.0)}
-                            {modalInfo.getRatingStar(8.0)}
-                            {modalInfo.getRatingStar(10.0)}
+                            {modalInfo.getRatingStar(modalInfo.modalInfo.rating, 2.0)}
+                            {modalInfo.getRatingStar(modalInfo.modalInfo.rating, 4.0)}
+                            {modalInfo.getRatingStar(modalInfo.modalInfo.rating, 6.0)}
+                            {modalInfo.getRatingStar(modalInfo.modalInfo.rating, 8.0)}
+                            {modalInfo.getRatingStar(modalInfo.modalInfo.rating, 10.0)}
                             </div>
                         <p>{modalInfo.modalInfo.overview}</p>
                     </section>

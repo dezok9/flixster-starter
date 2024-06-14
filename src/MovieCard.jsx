@@ -26,9 +26,11 @@ function MovieCard(movieData) {
                 "rating": movieData.vote_average,
                 "setModalInfo": movieData.setModalInfo,
                 "getRatingStar": movieData.getRatingStar,
+                "rating": movieData.rating,
                 "overview": movieData.overview,
                 "updateModalView": updateModalView,
-                "setModalIsOpen": setModalIsOpen
+                "setModalIsOpen": setModalIsOpen,
+                "genres": movieData.genres
             });
 
         }
@@ -44,8 +46,6 @@ function MovieCard(movieData) {
          * Toggles favorite button.
          */
         event.stopPropagation();
-        // console.log(movieData.favoriteMoviesData)
-        // console.log(movieData.title)
         if (isFavorited == false) {
             movieData.setFavoriteMoviesData(movieData.favoriteMoviesData.concat([
                 {"title": movieData.title,
@@ -79,8 +79,8 @@ function MovieCard(movieData) {
         }
         else {
             setIsWatched(false);
-                      // Remove all movie dictionaries that have the title of the card data clicked.
-                      movieData.setWatchedMoviesData(movieData.watchedMoviesData.filter(card => card.title != movieData.title));
+            // Remove all movie dictionaries that have the title of the card data clicked.
+            movieData.setWatchedMoviesData(movieData.watchedMoviesData.filter(card => card.title != movieData.title));
         }
     }
 
@@ -105,31 +105,15 @@ function MovieCard(movieData) {
                         </div>
 
                         <div>
-                            {movieData.getRatingStar(2.0)}
-                            {movieData.getRatingStar(4.0)}
-                            {movieData.getRatingStar(6.0)}
-                            {movieData.getRatingStar(8.0)}
-                            {movieData.getRatingStar(10.0)}
+                            {movieData.getRatingStar(movieData.rating, 2.0)}
+                            {movieData.getRatingStar(movieData.rating, 4.0)}
+                            {movieData.getRatingStar(movieData.rating, 6.0)}
+                            {movieData.getRatingStar(movieData.rating, 8.0)}
+                            {movieData.getRatingStar(movieData.rating, 10.0)}
                         </div>
                         <p>{movieData.rating}</p>
                  </section>
             </main>
-
-            {/* Renders modal if modal is open.
-            {modalIsOpen &&
-                <MovieModal
-                    title = {movieData.title}
-                    key = {movieData.movieID}
-                    movieID = {movieData.movieID}
-                    releaseDate = {movieData.releaseDate}
-                    backdropSrc = {movieData.backdropSrc}
-                    rating = {movieData.vote_average}
-                    view = {view}
-                    getRatingStar = {movieData.getRatingStar}
-                    closeFunc = {handleModalView}
-                    overview = {movieData.overview}
-                />
-            } */}
         </>
     );
 }
